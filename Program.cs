@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 
 // Register DbContext with SQL Server
 builder.Services.AddDbContext<InvoicingDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
 
 // Register repositories
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
