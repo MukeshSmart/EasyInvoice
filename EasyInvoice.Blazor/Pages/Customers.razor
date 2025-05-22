@@ -1,0 +1,50 @@
+@page "/customers"
+@inject IHttpClientFactory ClientFactory
+
+<h3>Customers</h3>
+
+@if (customers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (customers.Count == 0)
+{
+    <p>No customers found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in customers)
+            {
+                <tr>
+                    <td>@customer.Name</td>
+                    <td>@customer.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<CustomerDto>? customers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = ClientFactory.CreateClient("Api");
+        customers = await client.GetFromJsonAsync<List<CustomerDto>>("api/customers");
+    }
+
+    public class CustomerDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+    }
+}
